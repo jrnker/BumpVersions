@@ -12,6 +12,10 @@ namespace bumpversions
     {
         static void Main(string[] args)
         {
+            // We want at least two options or this will be pointless
+            if (args.Length < 2)
+                args = new string[] { "-?" };
+
             var path = args[0];
 
             bool major = false;
@@ -51,7 +55,7 @@ namespace bumpversions
                     case "-h":
                     case "--help":
                         Console.WriteLine(string.Format("{0}, v{1}", Assembly.GetExecutingAssembly().GetName().Name.ToString(), Assembly.GetExecutingAssembly().GetName().Version.ToString()));
-                        Console.WriteLine("License and source: https://github.com/jrnker/BumpVersions");
+                        Console.WriteLine("License, source and doc: https://github.com/jrnker/BumpVersions");
                         Console.WriteLine(@"
 Usage:
   bumpversions.exe [pathtosearch] [-major|-minor|-build|-revision] [-reset]

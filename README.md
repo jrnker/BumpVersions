@@ -24,7 +24,7 @@ Example with path with spaces:
 ```
 
 ### Pre compiled version
-..can be found in https://github.com/jrnker/BumpVersions/bin/release
+..can be found in https://github.com/jrnker/BumpVersions/tree/master/bin/Release
 
 ### Implement in your project (C#)
 * Open your project settings and go to Build Events
