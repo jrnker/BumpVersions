@@ -1,11 +1,11 @@
 # BumpVersions
-Small tool to bump the version numbers of your project
+Small tool to bump the version numbers of your project in Visual Studio.
 
 License and source: https://github.com/jrnker/BumpVersions
 
 ### Description
 It will search the submitted path for AssemblyInfo.* files, parse these and increase version numbers as specified.
-
+It takes command line switches (-major -minor -build -revision) to specify what needs to be increased, and also the option -reset to set the lesser values to 0.
 It's meant to be implemented into your Visual Studio projects build flow to organize your executables and such with proper version numbers.
 
 Built on .Net 4.5.2
