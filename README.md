@@ -29,7 +29,7 @@ Example with path with spaces:
 
 ### Implement in your project (C#)
 * Open your project settings and go to Build Events
-* In *Pre-build event command line:*, insert the below code, with adjusted paths to buildevents.exe
+* In *Pre-build event command line:*, insert the below code, with adjusted paths to bumpversions.exe
 
 Pre-build event command line:
 ```sh
