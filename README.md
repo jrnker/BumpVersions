@@ -1,5 +1,5 @@
 # BumpVersions
-Small tool to bump the version numbers of your project
+Small tool to bump the version numbers of your project\n
 License and source: https://github.com/jrnker/BumpVersions
 
 ### Description
@@ -47,6 +47,6 @@ Goto End
 :End
 ```
 
-With this configuration, your project will increase like this:
-For debug mode, v1.0.0.0, v1.0.0.1, v1.0.0.2
+With this configuration, your project will increase like this:\n
+For debug mode, v1.0.0.0, v1.0.0.1, v1.0.0.2\n
 For release mode, v1.0.0.0, v1.0.1.0, v1.0.2.0
