@@ -59,11 +59,11 @@ if "$(ConfigurationName)"=="Release" Goto Release
 Goto End
 
 :Debug
-IF EXIST "$(TargetPath)" "$(TargetPath)" "$(ProjectDir) " -revision -reset
+IF EXIST "$(TargetPath)" "$(TargetPath)" ..\.. -revision -reset
 Goto End
 
 :Release
-IF EXIST "$(TargetPath)" "$(TargetPath)" "$(ProjectDir) " -build -reset
+IF EXIST "$(TargetPath)" "$(TargetPath)" ..\.. -build -reset
 Goto End
 
 :End</PreBuildEvent>

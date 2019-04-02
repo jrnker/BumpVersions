@@ -78,9 +78,11 @@ Example:
             var files = findAllFiles(path.Trim());
 
             // Array of what to search for and try to bump
-            // First two are for C#, last two for VB.Net
-            string[] prefixes = new string[] { "[assembly: AssemblyVersion(\"", "[assembly: AssemblyFileVersion(\"",
-            "<Assembly: AssemblyVersion(\"", "<Assembly: AssemblyFileVersion(\""};
+            string[] prefixes = new string[] {
+                "[assembly: AssemblyVersion(\"", "[assembly: AssemblyFileVersion(\"", // These are for C# .Net Framework
+                "<Assembly: AssemblyVersion(\"", "<Assembly: AssemblyFileVersion(\"", // These for VB.NET .Net Framework
+                "<AssemblyVersion>","<FileVersion>" // and these for C# .Net Standard
+            };
 
             // Iterate through the found files
             foreach (var f in files)
@@ -103,22 +105,36 @@ Example:
                         var d = s;
                         foreach (string p in prefixes)
                         {
-                            if (s.Length > p.Length && s.Substring(0, p.Length) == p)
+                            if (s.Length > p.Length && s.Contains(p))
                             {
-                                // C#
+                                // C# .Net Framework
                                 //[assembly: AssemblyVersion("1.0.0.0")]
                                 //[assembly: AssemblyFileVersion("1.0.0.0")]
 
-                                // vb.net
+                                // vb.net .Net Framework
                                 //<Assembly: AssemblyVersion("2.6.0.0")>
                                 //<Assembly: AssemblyFileVersion("2.6.0.0")>
 
+                                // C# .Net Standard
+                                //<AssemblyVersion>1.1.0.0</AssemblyVersion>
+                                //<FileVersion>1.1.0.0</FileVersion>
+
                                 // Set the ending of the string if we edit it.
-                                // C# ends with ] while VB.Net ends with >
+                                // In .Net Framework C# ends with ] while VB.Net ends with >
+                                // and is found in the Assemblyinfo file
                                 string postfix = "\")" + (p[0] == '[' ? "]" : ">");
 
+
+                                // Set the ending of the string if we edit it.
+                                // In .Net Framework C# it's stored in XML variables
+                                // and is found in the project file
+                                if (p == "<AssemblyVersion>")
+                                    postfix = "</AssemblyVersion>";
+                                if (p == "<FileVersion>")
+                                    postfix = "</FileVersion>";
+
                                 Version v = null;
-                                if (Version.TryParse(d.Replace(p, "").Split('"')[0], out v))
+                                if (Version.TryParse(d.Replace(p, "").Split('"')[0].Split('<')[0], out v))
                                 {
                                     int imajor = v.Major;
                                     int iminor = v.Minor;
@@ -191,16 +207,20 @@ Example:
         private static List<string> findAllFiles(string path)
         {
             List<string> files = new List<string>();
-            var find = "AssemblyInfo.*";
+            var find1 = "AssemblyInfo.*";
+            var find2 = "*.csproj";
 
-            foreach (var f in Directory.EnumerateFiles(path, find))
-            {
+            foreach (var f in Directory.EnumerateFiles(path, find1))
                 files.Add(f);
-            }
+
+            foreach (var f in Directory.EnumerateFiles(path, find2))
+                files.Add(f);
+
             foreach (var d in Directory.EnumerateDirectories(path))
             {
                 files.AddRange(findAllFiles(d));
             }
+
             return files;
         }
     }
