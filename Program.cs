@@ -81,6 +81,7 @@ Example:
             string[] prefixes = new string[] {
                 "[assembly: AssemblyVersion(\"", "[assembly: AssemblyFileVersion(\"", // These are for C# .Net Framework
                 "<Assembly: AssemblyVersion(\"", "<Assembly: AssemblyFileVersion(\"", // These for VB.NET .Net Framework
+                "<Version>", // and these for C# .Net Standard
                 "<AssemblyVersion>","<FileVersion>" // and these for C# .Net Standard
             };
 
@@ -118,12 +119,13 @@ Example:
                                 // C# .Net Standard
                                 //<AssemblyVersion>1.1.0.0</AssemblyVersion>
                                 //<FileVersion>1.1.0.0</FileVersion>
+                                //<Version>1.1.0.0</Version>
 
                                 // Set the ending of the string if we edit it.
                                 // In .Net Framework C# ends with ] while VB.Net ends with >
                                 // and is found in the Assemblyinfo file
                                 string postfix = "\")" + (p[0] == '[' ? "]" : ">");
-
+                                int padding = s.IndexOf(p);
 
                                 // Set the ending of the string if we edit it.
                                 // In .Net Framework C# it's stored in XML variables
@@ -132,6 +134,8 @@ Example:
                                     postfix = "</AssemblyVersion>";
                                 if (p == "<FileVersion>")
                                     postfix = "</FileVersion>";
+                                if (p == "<Version>")
+                                    postfix = "</Version>";
 
                                 Version v = null;
                                 if (Version.TryParse(d.Replace(p, "").Split('"')[0].Split('<')[0], out v))
@@ -174,6 +178,7 @@ Example:
                                     }
                                     // Rebuild this line with the new version info
                                     d = p + new Version(imajor, iminor, ibuild, irevision) + postfix;
+                                    d = d.PadLeft(padding + d.Length, ' ');
                                     fileUpdated = true;
                                 }
                             }
